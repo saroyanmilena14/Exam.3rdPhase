@@ -6,6 +6,7 @@ import Pages.staffam.JobArticlesPage;
 import org.openqa.selenium.WebDriver;
 
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -19,6 +20,8 @@ public class StaffAm {
 
 
     WebDriver driver;
+    WebDriverWait wait;
+    String myCategorytext = "Sales/service management";
 
 
     @BeforeSuite
@@ -32,32 +35,32 @@ public class StaffAm {
         driver.manage().window().maximize();
         driver.get("https://staff.am");
 
-        HomePage homePage=new HomePage(driver);
+        HomePage homePage=new HomePage(driver, wait);
         homePage.waitForPageLoad();
-        homePage.selectingCategory();
+
+        homePage.selectingCategory(myCategorytext);
     }
     @Test
     public void testProject() {
 
-        JobArticlesPage jobArticlesPage=new JobArticlesPage(driver);
+        JobArticlesPage jobArticlesPage=new JobArticlesPage(driver,wait);
         jobArticlesPage.waitForPageLoad();
 
-        Assert.assertNotNull(jobArticlesPage.checkTheCheckBox(), "Your chosen category didn't appear in checkbox.");
+        Assert.assertNotNull(jobArticlesPage.checkTheCheckBox(myCategorytext), "Your chosen category didn't appear in checkbox.");
 
 
         if(jobArticlesPage.getCountFromFilterbar()>=100) {
             Assert.assertEquals(jobArticlesPage.findCountOfAllJobArticlesOnPage(),100);
         }
         else if(jobArticlesPage.getCountFromFilterbar()<100){
-            Assert.assertEquals(jobArticlesPage.findCountOfAllJobArticlesOnPage(),jobArticlesPage.findCountOfAllJobArticlesOnPage());
+            Assert.assertEquals(jobArticlesPage.getCountFromFilterbar(),jobArticlesPage.findCountOfAllJobArticlesOnPage());
         }
-        System.out.println(jobArticlesPage.checkTheCheckBox());
+
     }
 
 
     @AfterClass
             public void quitingTest() {
-        JobArticlesPage jobArticlesPage1 = new JobArticlesPage(driver);
-        jobArticlesPage1.QuitingChrome();
+        driver.quit();
     }}
 
