@@ -7,20 +7,23 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class HomePage {
-
+public class HomePage extends BasePage {
 
     private  WebDriverWait wait;
-    private WebDriver driver;
     private By searchButtonLoc = By.xpath("//div[@class='col-lg-3 col-sm-3 search-btn']//button[@type='submit']");
     private By categtoriesButtonLoc = By.cssSelector("#jobsfilter-category");
-    String myCategorytext = "Sales/service management";
-    private By myCategoryLoc = By.xpath("//div[@class='form-group field-jobsfilter-category']//option[text()='"+myCategorytext+"']");
-    public HomePage( WebDriver driver, WebDriverWait wait) {
-        this.driver=driver;
-        this.wait = new WebDriverWait(driver, 20);
-    }
+    private String myCategoryLocTemplate = "//div[@class='form-group field-jobsfilter-category']//option[text()='%s']";
 
+
+    public HomePage(WebDriver driver) {
+        super(driver);
+        wait = new WebDriverWait(driver,20);
+    }
+    public HomePage open() {
+
+        driver.get(BASE_URL);
+        return this;
+    }
 
     public WebDriverWait getWait() {
         return wait;
@@ -53,33 +56,26 @@ public class HomePage {
         this.categtoriesButtonLoc = categtoriesButtonLoc;
     }
 
-    public By getMyCategoryLoc() {
-        return myCategoryLoc;
+    public String getMyCategoryLocTemplate() {
+        return myCategoryLocTemplate;
     }
-
-    public void setMyCategoryLoc(By myCategoryLoc) {
-        this.myCategoryLoc = myCategoryLoc;
-    }
-
-
-
-
 
     public void waitForPageLoad() {
 
         wait.until(ExpectedConditions.elementToBeClickable(searchButtonLoc));
     }
 
+
     public void selectingCategory(String myCategorytextt) {
 
         WebElement categtoriesButton = driver.findElement(categtoriesButtonLoc);
         categtoriesButton.click();
-        WebElement myCategory = wait.until(ExpectedConditions.elementToBeClickable(myCategoryLoc));
+        String myActualCategoryText=String.format(myCategoryLocTemplate,myCategorytextt);
+        WebElement myCategory = wait.until(ExpectedConditions.elementToBeClickable(By.xpath(myActualCategoryText)));
         myCategory.click();
         WebElement searchButton= driver.findElement(searchButtonLoc);
         searchButton.click();
     }
-
 
 }
 

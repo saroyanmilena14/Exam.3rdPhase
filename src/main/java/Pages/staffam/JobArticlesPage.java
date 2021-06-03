@@ -9,17 +9,20 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
+import java.util.Random;
 
-public class JobArticlesPage {
-    private WebDriver driver;
-    String myCategorytext = "Sales/service management";
+public class JobArticlesPage extends BasePage{
+
     private By allArticlesOnPageLoc = By.xpath("//div[@data-key]");
-    private By checkBoxLoc = By.xpath("//en[text()='"+myCategorytext+"']/preceding::input[@checked='checked']");
-    private By countOfJobArticlesLoc=By.xpath("//input[@checked='checked']/following-sibling::span[@data-count]");
+    private String checkBoxLocTemplate = "//en[text()='%s']/preceding::input[@checked='checked']";
+    private By countOfJobArticlesLoc = By.xpath("//input[@checked='checked']/following-sibling::span[@data-count]");
+    private String LanguageLocTemplate = "//li[@id='lang-dropdown']//a[text()='%s']";
+    private By selectedJobTitleLoc = By.xpath("//div[@id='job-post']//div[@class='row']//h2");
 
-    public JobArticlesPage(WebDriver driver, WebDriverWait wait) {
-        this.driver = driver;
-        this.wait=new WebDriverWait(driver,20);
+
+    public JobArticlesPage(WebDriver driver) {
+        super(driver);
+        wait = new WebDriverWait(driver,20);
     }
 
 
@@ -32,7 +35,7 @@ public class JobArticlesPage {
         this.wait = wait;
     }
 
-    private WebDriverWait wait ;
+    private WebDriverWait wait;
     private By featuredJobsButtonLoc = By.xpath("//div[@class='row featured-jobs-row']//label[@class='featured-jobs-lbl']//span");
 
     public WebDriver getDriver() {
@@ -51,6 +54,14 @@ public class JobArticlesPage {
         this.featuredJobsButtonLoc = featuredJobsButtonLoc;
     }
 
+    public String getCheckBoxLocTemplate() {
+        return checkBoxLocTemplate;
+    }
+
+    public String getLanguageLocTemplate() {
+        return LanguageLocTemplate;
+    }
+
     public By getAllArticlesOnPageLoc() {
         return allArticlesOnPageLoc;
     }
@@ -59,13 +70,6 @@ public class JobArticlesPage {
         this.allArticlesOnPageLoc = allArticlesOnPageLoc;
     }
 
-    public By getCheckBoxLoc() {
-        return checkBoxLoc;
-    }
-
-    public void setCheckBoxLoc(By checkBoxLoc) {
-        this.checkBoxLoc = checkBoxLoc;
-    }
 
     public By getCountOfJobArticlesLoc() {
         return countOfJobArticlesLoc;
@@ -74,6 +78,8 @@ public class JobArticlesPage {
     public void setCountOfJobArticlesLoc(By countOfJobArticlesLoc) {
         this.countOfJobArticlesLoc = countOfJobArticlesLoc;
     }
+
+
 
 
     public void waitForPageLoad() {
@@ -87,24 +93,50 @@ public class JobArticlesPage {
     }
 
     public String checkTheCheckBox(String myCategorytext) {
+        String actualCategoryText = String.format(checkBoxLocTemplate, myCategorytext);
+        WebElement checked = driver.findElement(By.xpath(actualCategoryText));
 
-        WebElement checked=driver.findElement(checkBoxLoc);
+        try {
+            return checked.getAttribute("checked");
 
-       try {
-         return  checked.getAttribute("checked");
-
-       }
-       catch(NoSuchElementException e){
-           return null;
-       }
+        } catch (NoSuchElementException e) {
+            return null;
+        }
     }
 
     public int getCountFromFilterbar() {
-        String countFromFilterBarText=driver.findElement(countOfJobArticlesLoc).getText().replace("(", "").replace(")", "");
+        String countFromFilterBarText = driver.findElement(countOfJobArticlesLoc).getText().replace("(", "").replace(")", "");
 
-        int countFromFilterBar=Integer.parseInt(countFromFilterBarText);
+        return Integer.parseInt(countFromFilterBarText);
+    }
 
-        return countFromFilterBar;
+    public String getRandomJobTitle() {
+        List<WebElement> allJobsOnPage = driver.findElements(By.xpath("//div[@data-key]"));
+        WebElement randomJob = allJobsOnPage.get(new Random().nextInt(allJobsOnPage.size()));
+        String randomJobText = randomJob.getText();
+        String randomJobTitle = randomJobText.substring(0, randomJobText.indexOf("\n"));
+        randomJob.click();
+        return randomJobTitle;
+    }
+
+    public String getSelectedJobTitle() {
+        return driver.findElement(selectedJobTitleLoc).getText();
+    }
+
+
+    public void ChangePageLanguageAndCheckTitle(String languageName) {
+        WebElement chooseLanguageButton = driver.findElement(By.xpath("//li[@id='lang-dropdown']//a[@data-toggle='dropdown']"));
+        chooseLanguageButton.click();
+        String actualLanguageText = String.format(LanguageLocTemplate, languageName);
+        WebElement chooseTheWantedLanguage = driver.findElement(By.xpath(actualLanguageText));
+        chooseTheWantedLanguage.click();
+
+    }
+
+
+    public String getSelectedJobTitleAfterChangingLang() {
+        return driver.findElement(selectedJobTitleLoc).getText();
     }
 
 }
+
