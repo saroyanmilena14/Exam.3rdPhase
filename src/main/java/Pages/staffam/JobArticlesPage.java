@@ -26,58 +26,8 @@ public class JobArticlesPage extends BasePage{
     }
 
 
-
-    public WebDriverWait getWait() {
-        return wait;
-    }
-
-    public void setWait(WebDriverWait wait) {
-        this.wait = wait;
-    }
-
     private WebDriverWait wait;
     private By featuredJobsButtonLoc = By.xpath("//div[@class='row featured-jobs-row']//label[@class='featured-jobs-lbl']//span");
-
-    public WebDriver getDriver() {
-        return driver;
-    }
-
-    public void setDriver(WebDriver driver) {
-        this.driver = driver;
-    }
-
-    public By getFeaturedJobsButtonLoc() {
-        return featuredJobsButtonLoc;
-    }
-
-    public void setFeaturedJobsButtonLoc(By featuredJobsButtonLoc) {
-        this.featuredJobsButtonLoc = featuredJobsButtonLoc;
-    }
-
-    public String getCheckBoxLocTemplate() {
-        return checkBoxLocTemplate;
-    }
-
-    public String getLanguageLocTemplate() {
-        return LanguageLocTemplate;
-    }
-
-    public By getAllArticlesOnPageLoc() {
-        return allArticlesOnPageLoc;
-    }
-
-    public void setAllArticlesOnPageLoc(By allArticlesOnPageLoc) {
-        this.allArticlesOnPageLoc = allArticlesOnPageLoc;
-    }
-
-
-    public By getCountOfJobArticlesLoc() {
-        return countOfJobArticlesLoc;
-    }
-
-    public void setCountOfJobArticlesLoc(By countOfJobArticlesLoc) {
-        this.countOfJobArticlesLoc = countOfJobArticlesLoc;
-    }
 
 
 

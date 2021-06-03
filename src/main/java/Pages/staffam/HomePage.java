@@ -25,40 +25,7 @@ public class HomePage extends BasePage {
         return this;
     }
 
-    public WebDriverWait getWait() {
-        return wait;
-    }
 
-    public void setWait(WebDriverWait wait) {
-        this.wait = wait;
-    }
-    public WebDriver getDriver() {
-        return driver;
-    }
-
-    public void setDriver(WebDriver driver) {
-        this.driver = driver;
-    }
-
-    public By getSearchButtonLoc() {
-        return searchButtonLoc;
-    }
-
-    public void setSearchButtonLoc(By searchButtonLoc) {
-        this.searchButtonLoc = searchButtonLoc;
-    }
-
-    public By getCategtoriesButtonLoc() {
-        return categtoriesButtonLoc;
-    }
-
-    public void setCategtoriesButtonLoc(By categtoriesButtonLoc) {
-        this.categtoriesButtonLoc = categtoriesButtonLoc;
-    }
-
-    public String getMyCategoryLocTemplate() {
-        return myCategoryLocTemplate;
-    }
 
     public void waitForPageLoad() {
 
