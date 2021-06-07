@@ -2,15 +2,16 @@ package EpamTest;
 
 import EpamPages.HistoryOfEpamPage;
 import EpamPages.HomePage;
-import org.openqa.selenium.NoSuchElementException;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
 
-import java.sql.SQLOutput;
+
 
 public class EpamTest {
 
@@ -33,7 +34,7 @@ public class EpamTest {
         HomePage homePage = new HomePage(driver);
         homePage.open();
         homePage.waitForPageLoad();
-        homePage.SelectingJobCategory(categoryText1);
+        homePage.SelectingJobCategory(categoryText);
         try {
             Assert.assertNotNull(homePage.CheckIfJobsAreDisplayed());
         } catch (AssertionError e) {
@@ -47,6 +48,11 @@ public class EpamTest {
     public void testHistoryPAge() {
         HistoryOfEpamPage historyOfEpamPage = new HistoryOfEpamPage(driver);
         historyOfEpamPage.waitForPageLoad();
+
         Assert.assertNotNull(historyOfEpamPage.CheckIfAllElemsAreDisplayed(), "The element you are looking for is not displayed.");
     }
-}
+
+    @AfterClass
+    public void quitingTest() {
+        driver.quit();
+    }}

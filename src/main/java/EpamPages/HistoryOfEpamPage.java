@@ -26,9 +26,11 @@ public class HistoryOfEpamPage extends BasePage {
     }
 
     public String CheckIfAllElemsAreDisplayed() {
+        String text="";
         for (int i = 0; i < 4; i++) {
-            System.out.println(allTextAfterEpamToday.get(i).getText());
-        }
-        return null;
+              text = allTextAfterEpamToday.get(i).getText();
+          }
+
+          return text;
     }
 }
